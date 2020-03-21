@@ -8,13 +8,25 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class CompaniesViewController: UITableViewController {
+
+    //=======================
+    // MARK: - Properties
+    var companyController = CompanyModelController()
 
     //=======================
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+//        companies = [
+//            Company(name: "Apple", founded: Date(), employees: []),
+//            Company(name: "Facebook", founded: Date(), employees: []),
+//            Company(name: "Google", founded: Date(), employees: [])
+//        ]
+        for company in companyController.companies {
+            print(company)
+        }
     }
 
     private func setupViews() {
@@ -48,6 +60,8 @@ class ViewController: UITableViewController {
 
     @objc private func handleAddCompany() {
         print("Adding Company")
+        let addCompanyVC = AddCompanyViewController()
+        navigationController?.pushViewController(addCompanyVC, animated: true)
     }
 
     //=======================
@@ -66,13 +80,13 @@ class ViewController: UITableViewController {
     //=======================
     // MARK: - TableView DataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        8
+        companyController.companies.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: .companyCellId, for: indexPath)
         cell.backgroundColor = UIColor.companyCellColor
-        cell.textLabel?.text = "Company Name".uppercased()
+        cell.textLabel?.text = companyController.companies[indexPath.row].name.uppercased()
         cell.textLabel?.textColor = .systemBackground
         let font = UIFont.boldSystemFont(ofSize: 16)
         cell.textLabel?.font = font

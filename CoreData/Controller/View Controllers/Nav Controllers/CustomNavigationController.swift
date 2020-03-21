@@ -36,6 +36,7 @@ class CustomNavigationController: UINavigationController {
         navigationBar.backgroundColor = .lightRed
         navigationBar.isTranslucent = false
         navigationBar.barTintColor = .lightRed
+        navigationBar.tintColor = .systemBackground
     }
 
     func setTitleAttributes() {

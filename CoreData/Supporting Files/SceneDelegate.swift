@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if scene as? UIWindowScene != nil {
 
         } else { return }
-        let companiesViewController = ViewController()
+        let companiesViewController = CompaniesViewController()
         let navController = CustomNavigationController(rootViewController: companiesViewController)
         window?.rootViewController = navController
     }
