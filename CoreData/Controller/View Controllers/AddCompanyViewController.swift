@@ -21,7 +21,7 @@ class AddCompanyViewController: UIViewController {
     private var pickerDate: Date?
     private let bgView = UIView()
 
-    var company: Company?
+    private var company: Company?
     weak var delegate: AddCompanyDelegate?
 
     //=======================
@@ -35,57 +35,30 @@ class AddCompanyViewController: UIViewController {
         setupViews()
     }
 
-    func setupViews() {
+    private func setupViews() {
         self.title = "Add Company"
         view.backgroundColor = .tableViewBackgroundColor
         setupBackButton()
-        setupInput()
+        setupInputs()
     }
 
-    func setupBackButton() {
+    private func setupBackButton() {
         let backItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
         navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
     }
 
-    func setupInput() {
-        companyNameTextField = createTextField(placeholder: "Enter a Company Name")
-        dateTextField = createTextField(placeholder: "Enter Date Founded")
-        dateTextField.delegate = self
-        //Horizontal Stack
+    //=======================
+    // MARK: - Setup User Inputs
+    private func setupInputs() {
+        //create textFields
+        setupTextFields()
+        //Vertical Stack
         let vStack = createTextFieldStack()
-        //add arrangedSubviews
         vStack.addArrangedSubview(companyNameTextField)
         vStack.addArrangedSubview(dateTextField)
     }
 
-    func presentDatePickerView() {
-        datePicker.datePickerMode = .date
-        datePicker.maximumDate = Date()
-        datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
-
-        bgView.frame = CGRect(x: dateTextField.frame.minX,
-                              y: dateTextField.center.y,
-                              width: view.frame.width - 40,
-                              height: datePicker.frame.height + 40
-        )
-        bgView.center.x = view.center.x
-        bgView.backgroundColor = .customFillColor
-        view.addSubview(bgView)
-        view.addSubview(datePicker)
-        bgView.addSubview(datePicker)
-    }
-
-    @objc func pickerChanged() {
-        pickerDate = datePicker.date
-        bgView.removeFromSuperview()
-    }
-
-    func addCompany() {
-        guard let company = company else { return }
-        delegate?.addCompany(company)
-    }
-
-    func createTextFieldStack() -> UIStackView {
+    private func createTextFieldStack() -> UIStackView {
         let vStack = UIStackView()
         vStack.axis = .vertical
         vStack.alignment = .fill
@@ -95,18 +68,66 @@ class AddCompanyViewController: UIViewController {
         vStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
         vStack.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         vStack.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
-        vStack.spacing = 8
+        vStack.spacing = 12
         return vStack
     }
 
-    func createTextField(placeholder: String) -> UITextField {
+    private func setupTextFields() {
+        companyNameTextField = createTextField(placeholder: "Enter a Company Name")
+        dateTextField = createTextField(placeholder: "Enter Date Founded")
+        companyNameTextField.delegate = self
+        dateTextField.delegate = self
+    }
+
+    private func createTextField(placeholder: String) -> UITextField {
         let textField = UITextField()
         textField.placeholder = placeholder
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.cornerRadius = 4
         textField.backgroundColor = .systemGray2
+        textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         view.addSubview(textField)
         return textField
+    }
+
+    //=======================
+    // MARK: - Date Picker
+    private func presentDatePickerView() {
+        datePicker.datePickerMode = .date
+        datePicker.maximumDate = Date()
+        datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
+        setupPickerBackground()
+        view.addSubview(datePicker)
+        bgView.addSubview(datePicker)
+    }
+
+    private func setupPickerBackground() {
+        bgView.frame = CGRect(x: dateTextField.frame.minX,
+                              y: dateTextField.center.y,
+                              width: view.frame.width - 40,
+                              height: datePicker.frame.height + 40
+        )
+        bgView.center.x = view.center.x
+        bgView.backgroundColor = .customFillColor
+        bgView.layer.cornerRadius = 20
+        view.addSubview(bgView)
+    }
+
+    @objc private func pickerChanged() {
+        pickerDate = datePicker.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        guard let pickerDate = pickerDate else { return }
+        dateTextField.text = dateFormatter.string(from: pickerDate)
+        bgView.removeFromSuperview()
+    }
+
+    //=======================
+    // MARK: - Delegate Method
+    private func addCompany() {
+        guard let company = company else { return }
+        delegate?.addCompany(company)
     }
 }
 
@@ -114,19 +135,18 @@ extension AddCompanyViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField {
         case dateTextField:
+            dateTextField.becomeFirstResponder()
+            guard let text = dateTextField.text else { return }
             presentDatePickerView()
         default:
-            break
+            textField.becomeFirstResponder()
         }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
-        case dateTextField:
-            print()
         default:
-            break
+            textField.resignFirstResponder()
         }
-
     }
 }

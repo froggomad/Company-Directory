@@ -59,7 +59,10 @@ class CompanyModelController: CompanyDelegate {
     }
 
     func removeEmployee(_ company: Company, employee: Employee) {
-
+        if let companyIndex = companyIndex(company),
+            let employeeIndex = companies[companyIndex].employees.firstIndex(of: employee) {
+            companies[companyIndex].employees.remove(at: employeeIndex)
+        }
     }
 
     //=======================
