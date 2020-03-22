@@ -54,9 +54,14 @@ class CompaniesViewController: UITableViewController {
     }
 
     @objc private func handleAddCompany() {
-        print("Adding Company")
         let addCompanyVC = AddCompanyViewController()
         navigationController?.pushViewController(addCompanyVC, animated: true)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? AddCompanyViewController {
+            destination.delegate = self
+        }
     }
 
     //=======================
