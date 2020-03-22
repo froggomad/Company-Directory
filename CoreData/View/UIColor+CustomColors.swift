@@ -13,4 +13,5 @@ extension UIColor {
     static let tableViewBackgroundColor = UIColor(named: "tableViewBackgroundColor")!
     static let companyCellColor = UIColor(named: "companyCellColor")!
     static let tableViewHeaderColor = UIColor(named: "headerColor")!
+    static let customFillColor = UIColor(named: "customFillColor")!
 }
