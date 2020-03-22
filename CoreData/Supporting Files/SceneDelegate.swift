@@ -16,12 +16,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
-        if scene as? UIWindowScene != nil {
 
-        } else { return }
-        let companiesViewController = CompaniesViewController()
-        let navController = CustomNavigationController(rootViewController: companiesViewController)
-        window?.rootViewController = navController
+            if let windowScene = scene as? UIWindowScene {
+                window = UIWindow(windowScene: windowScene)
+                let companiesViewController = CompaniesViewController()
+                let navController = CustomNavigationController(rootViewController: companiesViewController)
+                window?.rootViewController = navController
+                window?.makeKeyAndVisible()
+            }
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

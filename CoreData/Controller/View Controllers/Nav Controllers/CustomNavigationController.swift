@@ -32,6 +32,7 @@ class CustomNavigationController: UINavigationController {
         setBarTint()
         setTitleAttributes()
     }
+
     private func setBarTint() {
         navigationBar.backgroundColor = .lightRed
         navigationBar.isTranslucent = false

@@ -19,11 +19,6 @@ class CompaniesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-//        companies = [
-//            Company(name: "Apple", founded: Date(), employees: []),
-//            Company(name: "Facebook", founded: Date(), employees: []),
-//            Company(name: "Google", founded: Date(), employees: [])
-//        ]
         for company in companyController.companies {
             print(company)
         }
@@ -101,5 +96,15 @@ class CompaniesViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         50
+    }
+}
+
+extension CompaniesViewController: AddCompanyDelegate {
+    func addCompany(_ company: Company) {
+        companyController.addCompany(company)
+        let section = 0
+        guard let row = companyController.companies.firstIndex(of: company) else { return }
+        let indexPath = IndexPath(item: row, section: section)
+        tableView.reloadRows(at: [indexPath], with: .right)
     }
 }
