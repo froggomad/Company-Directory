@@ -8,16 +8,13 @@
 
 import Foundation
 
-struct Employee: CustomStringConvertible, Equatable {
-    let identifier: UUID
-    var name: String
-    var address: String
+extension Employee: CustomStringConvertible, Equatable {
 
-    var description: String {
-        "Employee \(name), Id: \(identifier)"
+    public var description: String {
+        "\(String(describing: name))"
     }
 
-    static func == (lhs: Employee, rhs: Employee) -> Bool {
-        return lhs.identifier == rhs.identifier
+    public static func == (lhs: Employee, rhs: Employee) -> Bool {
+        return lhs.name == rhs.name
     }
 }

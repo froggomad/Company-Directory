@@ -15,8 +15,8 @@ protocol AddCompanyDelegate: class {
 class AddCompanyViewController: UIViewController {
     //=======================
     // MARK: - Properties
-    private weak var companyNameTextField: UITextField!
-    private weak var dateTextField: UITextField!
+    private var companyNameTextField = UITextField()
+    private var dateTextField = UITextField()
     private let datePicker = UIDatePicker()
     private var pickerDate: Date?
     private let bgView = UIView()
@@ -40,6 +40,7 @@ class AddCompanyViewController: UIViewController {
         view.backgroundColor = .tableViewBackgroundColor
         setupBackButton()
         setupInputs()
+        addSaveButton()
     }
 
     private func setupBackButton() {
@@ -48,18 +49,33 @@ class AddCompanyViewController: UIViewController {
     }
 
     //=======================
+    // MARK: - Setup ImageView
+    private func createImageView() {
+
+    }
+
+    //=======================
     // MARK: - Setup User Inputs
     private func setupInputs() {
         //create textFields
-        setupTextFields()
-        //Vertical Stack
-        let vStack = createTextFieldStack()
-        vStack.addArrangedSubview(companyNameTextField)
-        vStack.addArrangedSubview(dateTextField)
+        createRows()
     }
 
-    private func createTextFieldStack() -> UIStackView {
+    private func createRows() {
+        let vStack = createVerticalParentStack()
+        createRow(labelText: "Name:",
+                  placeholder: "Enter a Company Name",
+                  addToStack: vStack,
+                  textField: &companyNameTextField)
+        createRow(labelText: "Date:",
+                  placeholder: "Enter Date Founded",
+                  addToStack: vStack,
+                  textField: &dateTextField)
+    }
+
+    private func createVerticalParentStack() -> UIStackView {
         let vStack = UIStackView()
+        vStack.spacing = 12
         vStack.axis = .vertical
         vStack.alignment = .fill
         vStack.distribution = .fillProportionally
@@ -68,26 +84,39 @@ class AddCompanyViewController: UIViewController {
         vStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
         vStack.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         vStack.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
-        vStack.spacing = 12
         return vStack
     }
 
-    private func setupTextFields() {
-        companyNameTextField = createTextField(placeholder: "Enter a Company Name")
-        dateTextField = createTextField(placeholder: "Enter Date Founded")
-        companyNameTextField.delegate = self
-        dateTextField.delegate = self
-    }
+    private func createRow(labelText: String,
+                           placeholder: String,
+                           addToStack: UIStackView? = nil,
+                           textField: inout UITextField) {
+        let hStack = UIStackView()
+        hStack.axis = .horizontal
+        hStack.alignment = .fill
+        hStack.distribution = .fillProportionally
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(hStack)
 
-    private func createTextField(placeholder: String) -> UITextField {
-        let textField = UITextField()
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .white
+        label.text = labelText
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        view.addSubview(label)
+        hStack.addArrangedSubview(label)
+
         textField.placeholder = placeholder
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.cornerRadius = 4
         textField.backgroundColor = .systemGray2
         textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        textField.delegate = self
         view.addSubview(textField)
-        return textField
+        hStack.addArrangedSubview(textField)
+
+        addToStack?.addArrangedSubview(hStack)
     }
 
     //=======================
@@ -123,6 +152,24 @@ class AddCompanyViewController: UIViewController {
         bgView.removeFromSuperview()
     }
 
+    private func addSaveButton() {
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveCompany))
+        navigationItem.rightBarButtonItem = saveButton
+    }
+
+    @objc func saveCompany() {
+        guard let name = companyNameTextField.text,
+            !name.isEmpty,
+            let founded = pickerDate
+            else {
+                Alert.showBasic(title: "Oops!", message: "Please enter all fields", viewController: self)
+                return
+        }
+        company = Company(name: name, founded: founded, employees: [])
+        navigationController?.popViewController(animated: true)
+        addCompany()
+    }
+
     //=======================
     // MARK: - Delegate Method
     private func addCompany() {
@@ -136,7 +183,6 @@ extension AddCompanyViewController: UITextFieldDelegate {
         switch textField {
         case dateTextField:
             dateTextField.becomeFirstResponder()
-            guard let text = dateTextField.text else { return }
             presentDatePickerView()
         default:
             textField.becomeFirstResponder()

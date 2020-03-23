@@ -8,21 +8,19 @@
 
 import Foundation
 
-struct Company: CustomStringConvertible, Equatable {
-    static func == (lhs: Company, rhs: Company) -> Bool {
-        lhs.name == rhs.name && lhs.founded == rhs.founded
+extension Company: CustomStringConvertible, Equatable {
+    public static func == (lhs: Company, rhs: Company) -> Bool {
+        lhs.name == rhs.name
+            &&
+        lhs.founded == rhs.founded
     }
 
-    let name: String
-    let founded: Date
-    var employees: [Employee]
-
-    var description: String {
-        "\(name) was founded on \(date), and currently has \(employees.count) employees"
+    public var description: String {
+        "\(String(describing: name)) was founded on \(date), and currently has \(String(describing: employees?.count)) employees"
     }
 
     private var date: String {
-        return dateFormatter.string(from: founded)
+        return dateFormatter.string(from: founded ?? Date())
     }
 
     private var dateFormatter: DateFormatter {

@@ -9,11 +9,17 @@
 import Foundation
 
 protocol CompanyDelegate: class {
+    ///List all companies in the app
     var companies: [Company] { get set }
+    ///Add a company to the list
     func addCompany(_ company: Company)
+    ///Add an employee to a company
     func addEmployee(_ company: Company, employee: Employee)
+    ///Change an employee's details
     func updateEmployee(_ company: Company, employee: Employee)
+    ///Remove an employee from a company
     func removeEmployee(_ company: Company, employee: Employee)
+    ///Remove a company from the list
     func removeCompany(_ company: Company)
 }
 

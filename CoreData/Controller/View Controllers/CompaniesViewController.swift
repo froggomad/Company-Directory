@@ -12,6 +12,7 @@ class CompaniesViewController: UITableViewController {
 
     //=======================
     // MARK: - Properties
+    let customCell = CompanyTableViewCell(style: .default, reuseIdentifier: .companyCellId)
     var companyController = CompanyModelController()
 
     //=======================
@@ -19,6 +20,7 @@ class CompaniesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        companyController.addCompany(Company(name: "Apple", founded: Date(), employees: []))
         for company in companyController.companies {
             print(company)
         }
@@ -55,6 +57,7 @@ class CompaniesViewController: UITableViewController {
 
     @objc private func handleAddCompany() {
         let addCompanyVC = AddCompanyViewController()
+        addCompanyVC.delegate = self
         navigationController?.pushViewController(addCompanyVC, animated: true)
     }
 
@@ -107,9 +110,6 @@ class CompaniesViewController: UITableViewController {
 extension CompaniesViewController: AddCompanyDelegate {
     func addCompany(_ company: Company) {
         companyController.addCompany(company)
-        let section = 0
-        guard let row = companyController.companies.firstIndex(of: company) else { return }
-        let indexPath = IndexPath(item: row, section: section)
-        tableView.reloadRows(at: [indexPath], with: .right)
+        tableView.reloadData()
     }
 }

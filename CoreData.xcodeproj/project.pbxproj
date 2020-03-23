@@ -12,6 +12,10 @@
 		B95509E824269BB800079C36 /* AddCompanyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95509E724269BB800079C36 /* AddCompanyViewController.swift */; };
 		B95509EB2426B75900079C36 /* CompanyModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95509EA2426B75900079C36 /* CompanyModelController.swift */; };
 		B9550A06242731D800079C36 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9550A05242731D800079C36 /* CoreDataTests.swift */; };
+		B9550A0E24283CB500079C36 /* UIImage+CustomImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9550A0D24283CB500079C36 /* UIImage+CustomImages.swift */; };
+		B9550A112428424D00079C36 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9550A102428424D00079C36 /* Alert.swift */; };
+		B9550A1324284B7000079C36 /* CompanyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9550A1224284B7000079C36 /* CompanyTableViewCell.swift */; };
+		B9550A1A2428FE8800079C36 /* CompanyModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B9550A182428FE8800079C36 /* CompanyModel.xcdatamodeld */; };
 		B995CB21242469CD002629A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B995CB20242469CD002629A7 /* AppDelegate.swift */; };
 		B995CB23242469CD002629A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B995CB22242469CD002629A7 /* SceneDelegate.swift */; };
 		B995CB25242469CD002629A7 /* CompaniesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B995CB24242469CD002629A7 /* CompaniesViewController.swift */; };
@@ -41,6 +45,10 @@
 		B9550A03242731D800079C36 /* CoreDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9550A05242731D800079C36 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		B9550A07242731D800079C36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B9550A0D24283CB500079C36 /* UIImage+CustomImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CustomImages.swift"; sourceTree = "<group>"; };
+		B9550A102428424D00079C36 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		B9550A1224284B7000079C36 /* CompanyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyTableViewCell.swift; sourceTree = "<group>"; };
+		B9550A192428FE8800079C36 /* CompanyModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CompanyModel.xcdatamodel; sourceTree = "<group>"; };
 		B995CB1D242469CD002629A7 /* CoreData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B995CB20242469CD002629A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B995CB22242469CD002629A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +115,14 @@
 			path = CoreDataTests;
 			sourceTree = "<group>";
 		};
+		B9550A0F2428424200079C36 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B9550A102428424D00079C36 /* Alert.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		B995CB14242469CD002629A7 = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +178,8 @@
 			isa = PBXGroup;
 			children = (
 				B9ACD163242538EB00B7B69B /* UIColor+CustomColors.swift */,
+				B9550A0D24283CB500079C36 /* UIImage+CustomImages.swift */,
+				B9550A1224284B7000079C36 /* CompanyTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -169,6 +187,8 @@
 		B9ACD1652425DDE200B7B69B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B9550A182428FE8800079C36 /* CompanyModel.xcdatamodeld */,
+				B9550A0F2428424200079C36 /* Helpers */,
 				B9ACD1662425DE0C00B7B69B /* String+identifiers.swift */,
 				B95509E1242675B400079C36 /* Company.swift */,
 				B95509E3242675EA00079C36 /* Employee.swift */,
@@ -239,6 +259,7 @@
 					};
 					B995CB1C242469CD002629A7 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -318,7 +339,11 @@
 				B95509E4242675EA00079C36 /* Employee.swift in Sources */,
 				B9ACD1672425DE0C00B7B69B /* String+identifiers.swift in Sources */,
 				B95509EB2426B75900079C36 /* CompanyModelController.swift in Sources */,
+				B9550A0E24283CB500079C36 /* UIImage+CustomImages.swift in Sources */,
 				B9ACD164242538EB00B7B69B /* UIColor+CustomColors.swift in Sources */,
+				B9550A112428424D00079C36 /* Alert.swift in Sources */,
+				B9550A1A2428FE8800079C36 /* CompanyModel.xcdatamodeld in Sources */,
+				B9550A1324284B7000079C36 /* CompanyTableViewCell.swift in Sources */,
 				B995CB25242469CD002629A7 /* CompaniesViewController.swift in Sources */,
 				B95509E2242675B400079C36 /* Company.swift in Sources */,
 				B995CB21242469CD002629A7 /* AppDelegate.swift in Sources */,
@@ -515,6 +540,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 34P4RF23ET;
 				INFOPLIST_FILE = "CoreData/Supporting Files/Info.plist";
@@ -524,6 +550,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hazystudios.CoreData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -533,6 +561,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 34P4RF23ET;
 				INFOPLIST_FILE = "CoreData/Supporting Files/Info.plist";
@@ -542,6 +571,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hazystudios.CoreData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -578,6 +608,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B9550A182428FE8800079C36 /* CompanyModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B9550A192428FE8800079C36 /* CompanyModel.xcdatamodel */,
+			);
+			currentVersion = B9550A192428FE8800079C36 /* CompanyModel.xcdatamodel */;
+			path = CompanyModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B995CB15242469CD002629A7 /* Project object */;
 }

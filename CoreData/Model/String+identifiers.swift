@@ -11,9 +11,3 @@ import UIKit
 extension String {
     static let companyCellId: String = "CompanyCell"
 }
-
-//=======================
-// MARK: - Images
-extension UIImage {
-    static let plusSign: UIImage = UIImage(named: "plus")!.withRenderingMode(.alwaysOriginal)
-}

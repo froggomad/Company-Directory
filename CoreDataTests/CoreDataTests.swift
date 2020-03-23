@@ -31,9 +31,9 @@ class CoreDataTests: XCTestCase {
         companyController.addCompany(testCo)
         companyController.addEmployee(testCo, employee: testEmp)
         companyController.updateEmployee(testCo, employee: testingEmp)
-        XCTAssertEqual(companyController.companies[0].employees[0].address, "123 main st.")
         XCTAssertEqual(companyController.companies.count, 1)
         XCTAssertEqual(companyController.companies[0].employees.count, 1)
+        XCTAssertEqual(companyController.companies[0].employees[0].address, "123 main st.")
     }
 
     func testRemoveEmployee() {
@@ -48,4 +48,5 @@ class CoreDataTests: XCTestCase {
         companyController.removeCompany(testCo)
         XCTAssertTrue(companyController.companies.isEmpty)
     }
+
 }
