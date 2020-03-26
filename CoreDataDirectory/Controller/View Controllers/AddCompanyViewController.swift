@@ -165,7 +165,7 @@ class AddCompanyViewController: UIViewController {
                 Alert.showBasic(title: "Oops!", message: "Please enter all fields", viewController: self)
                 return
         }
-        company = Company(name: name, founded: founded, employees: [])
+        //company = Company(name: name, founded: founded, employees: [])
         navigationController?.popViewController(animated: true)
         addCompany()
     }

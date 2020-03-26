@@ -7,22 +7,25 @@
 //
 
 import UIKit
+import CoreData
 
 class CompaniesViewController: UITableViewController {
 
     //=======================
     // MARK: - Properties
     let customCell = CompanyTableViewCell(style: .default, reuseIdentifier: .companyCellId)
-    var companyController = CompanyModelController()
+    //var companyController = CompanyModelController()
 
     //=======================
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        companyController.addCompany(Company(name: "Apple", founded: Date(), employees: []))
-        for company in companyController.companies {
-            print(company)
+        Company(name: "Apple", founded: Date())
+        do {
+            try CoreDataStack.shared.save()
+        } catch let saveErr {
+            
         }
     }
 
@@ -36,8 +39,7 @@ class CompaniesViewController: UITableViewController {
         view.backgroundColor = .systemBackground
     }
 
-    //=======================
-    // MARK: - Navigation Bar
+    // MARK: Navigation Bar
     private func setupNavigationBar() {
         setupNavBarTitle()
         setupBarButtonItems()
@@ -67,9 +69,8 @@ class CompaniesViewController: UITableViewController {
         }
     }
 
-    //=======================
-    // MARK: - TableView Views
 
+    // MARK: TableView
     private func setupTableView() {
         tableView.backgroundColor = .tableViewBackgroundColor
         tableView.tableFooterView = UIView()
@@ -83,13 +84,14 @@ class CompaniesViewController: UITableViewController {
     //=======================
     // MARK: - TableView DataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        companyController.companies.count
+        0
+        //companyController.companies.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: .companyCellId, for: indexPath)
         cell.backgroundColor = UIColor.companyCellColor
-        cell.textLabel?.text = companyController.companies[indexPath.row].name.uppercased()
+        //cell.textLabel?.text = companyController.companies[indexPath.row].name.uppercased()
         cell.textLabel?.textColor = .systemBackground
         let font = UIFont.boldSystemFont(ofSize: 16)
         cell.textLabel?.font = font
@@ -109,7 +111,7 @@ class CompaniesViewController: UITableViewController {
 
 extension CompaniesViewController: AddCompanyDelegate {
     func addCompany(_ company: Company) {
-        companyController.addCompany(company)
+        //companyController.addCompany(company)
         tableView.reloadData()
     }
 }

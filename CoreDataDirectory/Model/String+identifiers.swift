@@ -10,4 +10,5 @@ import UIKit
 // MARK: - Identifiers
 extension String {
     static let companyCellId: String = "CompanyCell"
+    static let MODELNAME: String = "CompanyModel"
 }
