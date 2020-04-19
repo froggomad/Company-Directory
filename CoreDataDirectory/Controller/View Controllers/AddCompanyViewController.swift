@@ -8,10 +8,7 @@
 
 import UIKit
 
-protocol AddCompanyDelegate: class {
-    func addCompany(_ company: Company)
-}
-
+@IBDesignable
 class AddCompanyViewController: UIViewController {
     //=======================
     // MARK: - Properties
@@ -19,10 +16,13 @@ class AddCompanyViewController: UIViewController {
     private var dateTextField = UITextField()
     private let datePicker = UIDatePicker()
     private var pickerDate: Date?
-    private let bgView = UIView()
+    private let datePickerView = UIView()
+    private let vStack = UIStackView()
 
-    private var company: Company?
-    weak var delegate: AddCompanyDelegate?
+    private let cornerRadius: CGFloat = 8
+
+    var company: Company?
+    var companyController: CompanyModelController?
 
     //=======================
     // MARK: - View Lifecycle
@@ -59,22 +59,25 @@ class AddCompanyViewController: UIViewController {
     private func setupInputs() {
         //create textFields
         createRows()
+        presentDatePickerView()
+        setupAddEmployeesButton()
     }
 
     private func createRows() {
         let vStack = createVerticalParentStack()
         createRow(labelText: "Name:",
+                  isInteractable: true,
                   placeholder: "Enter a Company Name",
                   addToStack: vStack,
                   textField: &companyNameTextField)
         createRow(labelText: "Date:",
-                  placeholder: "Enter Date Founded",
+                  isInteractable: false,
+                  placeholder: "Select a Date Below",
                   addToStack: vStack,
                   textField: &dateTextField)
     }
 
     private func createVerticalParentStack() -> UIStackView {
-        let vStack = UIStackView()
         vStack.spacing = 12
         vStack.axis = .vertical
         vStack.alignment = .fill
@@ -88,6 +91,7 @@ class AddCompanyViewController: UIViewController {
     }
 
     private func createRow(labelText: String,
+                           isInteractable: Bool,
                            placeholder: String,
                            addToStack: UIStackView? = nil,
                            textField: inout UITextField) {
@@ -109,13 +113,18 @@ class AddCompanyViewController: UIViewController {
 
         textField.placeholder = placeholder
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.layer.cornerRadius = 4
-        textField.backgroundColor = .systemGray2
+        textField.layer.cornerRadius = cornerRadius
         textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         textField.delegate = self
+        if !isInteractable {
+            textField.backgroundColor = .systemGray2
+            textField.isUserInteractionEnabled = false
+        } else {
+            textField.backgroundColor = .customFillColor
+        }
+
         view.addSubview(textField)
         hStack.addArrangedSubview(textField)
-
         addToStack?.addArrangedSubview(hStack)
     }
 
@@ -127,21 +136,47 @@ class AddCompanyViewController: UIViewController {
         datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
         setupPickerBackground()
         view.addSubview(datePicker)
-        bgView.addSubview(datePicker)
+        datePickerView.addSubview(datePicker)
     }
 
     private func setupPickerBackground() {
-        bgView.frame = CGRect(x: dateTextField.frame.minX,
-                              y: dateTextField.center.y,
-                              width: view.frame.width - 40,
-                              height: datePicker.frame.height + 40
+        datePickerView.translatesAutoresizingMaskIntoConstraints = false
+        datePickerView.frame = CGRect(x: 0,
+                                      y: 0,
+                                      width: 0,
+                                      height: 0
         )
-        bgView.center.x = view.center.x
-        bgView.backgroundColor = .customFillColor
-        bgView.layer.cornerRadius = 20
-        view.addSubview(bgView)
+        datePickerView.backgroundColor = .customFillColor
+        datePickerView.layer.cornerRadius = cornerRadius
+        view.addSubview(datePickerView)
+        NSLayoutConstraint.activate([
+            datePickerView.heightAnchor.constraint(equalToConstant: datePicker.frame.height + 40)
+        ])
+        vStack.addArrangedSubview(datePickerView)
     }
 
+    private func setupAddEmployeesButton() {
+        let button = UIButton()
+        button.setTitle("Add Employees", for: .normal)
+        button.addTarget(self,
+                         action: #selector(addEmployeesSegue),
+                         for: .touchUpInside)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = cornerRadius
+        vStack.addArrangedSubview(button)
+    }
+
+    @objc private func addEmployeesSegue() {
+        guard let company = company else { return }
+        let addEmployeeVC = AddEmployeeViewController()
+        addEmployeeVC.company = company
+        addEmployeeVC.companyController = companyController
+        present(addEmployeeVC, animated: true, completion: nil)
+    }
+
+    //=======================
+    // MARK: - Actions
     @objc private func pickerChanged() {
         pickerDate = datePicker.date
         let dateFormatter = DateFormatter()
@@ -149,7 +184,6 @@ class AddCompanyViewController: UIViewController {
         dateFormatter.timeStyle = .none
         guard let pickerDate = pickerDate else { return }
         dateTextField.text = dateFormatter.string(from: pickerDate)
-        bgView.removeFromSuperview()
     }
 
     private func addSaveButton() {
@@ -165,28 +199,15 @@ class AddCompanyViewController: UIViewController {
                 Alert.showBasic(title: "Oops!", message: "Please enter all fields", viewController: self)
                 return
         }
-        //company = Company(name: name, founded: founded, employees: [])
+        let company = Company(name: name, founded: founded)
+        companyController?.addCompany(company: company)
         navigationController?.popViewController(animated: true)
-        addCompany()
-    }
-
-    //=======================
-    // MARK: - Delegate Method
-    private func addCompany() {
-        guard let company = company else { return }
-        delegate?.addCompany(company)
     }
 }
 
 extension AddCompanyViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        switch textField {
-        case dateTextField:
-            dateTextField.becomeFirstResponder()
-            presentDatePickerView()
-        default:
-            textField.becomeFirstResponder()
-        }
+        textField.becomeFirstResponder()
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {

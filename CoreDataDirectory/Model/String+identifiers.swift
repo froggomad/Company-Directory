@@ -12,3 +12,9 @@ extension String {
     static let companyCellId: String = "CompanyCell"
     static let MODELNAME: String = "CompanyModel"
 }
+
+func foo(str: String) {
+    if str == .MODELNAME {
+
+    }
+}

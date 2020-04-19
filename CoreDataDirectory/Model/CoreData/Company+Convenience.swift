@@ -17,6 +17,11 @@ extension Company {
         self.name = name
         self.founded = founded
     }
+
+    static func friendlyDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
+    }
 }
-
-
